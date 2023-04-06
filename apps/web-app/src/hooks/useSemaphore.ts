@@ -6,7 +6,7 @@ import { SemaphoreContextType } from "../context/SemaphoreContext"
 
 const { publicRuntimeConfig: env } = getNextConfig()
 
-const ethereumNetwork = env.DEFAULT_NETWORK === "localhost" ? "http://localhost:8545" : env.DEFAULT_NETWORK
+const ethereumNetwork = `https://polygon-mumbai.infura.io/v3/${process.env.INFURA_API_KEY}`;
 
 export default function useSemaphore(): SemaphoreContextType {
     const [_users, setUsers] = useState<any[]>([])
