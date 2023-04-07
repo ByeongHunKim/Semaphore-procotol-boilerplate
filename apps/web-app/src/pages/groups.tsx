@@ -47,7 +47,7 @@ export default function GroupsPage() {
         setLogs(`Joining the Feedback group...`)
 
 
-        if (window.ethereum !== null && window.ethereum !== undefined) {
+        if (typeof window.ethereum !== 'undefined' && window.ethereum !== null) {
             const provider = new providers.Web3Provider(window.ethereum)
             await provider.send("eth_requestAccounts", [])
             const signer = provider.getSigner()
