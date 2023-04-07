@@ -20,7 +20,7 @@ const nextConfig = withPWA({
     env: {
         DEFAULT_NETWORK: process.env.DEFAULT_NETWORK,
         INFURA_API_KEY: process.env.INFURA_API_KEY,
-        ETHEREUM_PRIVATE_KEY: process.env.ETHEREUM_PRIVATE_KEY,
+        POLYGON_PRIVATE_KEY: process.env.POLYGON_PRIVATE_KEY,
         FEEDBACK_CONTRACT_ADDRESS: process.env.FEEDBACK_CONTRACT_ADDRESS,
         SEMAPHORE_CONTRACT_ADDRESS: process.env.SEMAPHORE_CONTRACT_ADDRESS
     },
