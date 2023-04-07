@@ -14,6 +14,12 @@ import {providers} from "ethers";
 
 const { publicRuntimeConfig: env } = getNextConfig()
 
+declare global {
+    interface Window {
+        ethereum?: any;
+    }
+}
+
 export default function GroupsPage() {
     const router = useRouter()
     const { setLogs } = useContext(LogsContext)
