@@ -1,3 +1,4 @@
+import {ethers} from "ethers";
 import { Box, Button, Divider, Heading, HStack, Link, Text, useBoolean, VStack } from "@chakra-ui/react"
 import { Identity } from "@semaphore-protocol/identity"
 import getNextConfig from "next/config"
@@ -9,6 +10,7 @@ import LogsContext from "../context/LogsContext"
 import SemaphoreContext from "../context/SemaphoreContext"
 import IconAddCircleFill from "../icons/IconAddCircleFill"
 import IconRefreshLine from "../icons/IconRefreshLine"
+import {providers} from "ethers";
 
 const { publicRuntimeConfig: env } = getNextConfig()
 
@@ -44,33 +46,22 @@ export default function GroupsPage() {
         setLoading.on()
         setLogs(`Joining the Feedback group...`)
 
-        let response: any
 
-        if (env.OPENZEPPELIN_AUTOTASK_WEBHOOK) {
-            response = await fetch(env.OPENZEPPELIN_AUTOTASK_WEBHOOK, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    abi: Feedback.abi,
-                    address: env.FEEDBACK_CONTRACT_ADDRESS,
-                    functionName: "joinGroup",
-                    functionParameters: [_identity.commitment.toString()]
-                })
-            })
-        } else {
-            response = await fetch("api/join", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    identityCommitment: _identity.commitment.toString()
-                })
-            })
-        }
+        if (window.ethereum) {
+            const provider = new providers.Web3Provider(window.ethereum)
+            await provider.send("eth_requestAccounts", [])
+            const signer = provider.getSigner()
+            const contract = new ethers.Contract(env.FEEDBACK_CONTRACT_ADDRESS, Feedback.abi, signer)
+            try {
+                const transaction = await contract.joinGroup(_identity.commitment.toString())
+                await transaction.wait()
+                addUser(_identity.commitment.toString())
+                setLogs(`You joined the Feedback group event 🎉 Share your feedback anonymously!`)
+            } catch (err) {
+                // revert 처리된 경우, 트랜잭션 실행에 실패하였습니다.
+                setLogs("Status: Fail with error 'you are not member of group!!!'")
 
-        if (response.status === 200) {
-            addUser(_identity.commitment.toString())
-
-            setLogs(`You joined the Feedback group event 🎉 Share your feedback anonymously!`)
+            }
         } else {
             setLogs("Some error occurred, please try again!")
         }
@@ -82,20 +73,20 @@ export default function GroupsPage() {
 
     return (
         <>
-            {/*<Heading as="h2" size="xl">*/}
-            {/*    Groups*/}
-            {/*</Heading>*/}
+            <Heading as="h2" size="xl">
+                Groups
+            </Heading>
 
-            {/*<Text pt="2" fontSize="md">*/}
-            {/*    Semaphore{" "}*/}
-            {/*    <Link href="https://semaphore.appliedzkp.org/docs/guides/groups" color="primary.500" isExternal>*/}
-            {/*        groups*/}
-            {/*    </Link>{" "}*/}
-            {/*    are binary incremental Merkle trees in which each leaf contains an identity commitment for a user.*/}
-            {/*    Groups can be abstracted to represent events, polls, or organizations.*/}
-            {/*</Text>*/}
+            <Text pt="2" fontSize="md">
+                Semaphore{" "}
+                <Link href="https://semaphore.appliedzkp.org/docs/guides/groups" color="primary.500" isExternal>
+                    groups
+                </Link>{" "}
+                are binary incremental Merkle trees in which each leaf contains an identity commitment for a user.
+                Groups can be abstracted to represent events, polls, or organizations.
+            </Text>
 
-            {/*<Divider pt="5" borderColor="gray.500" />*/}
+            <Divider pt="5" borderColor="gray.500" />
 
             <HStack py="5" justify="space-between">
                 <Text fontWeight="bold" fontSize="lg">

@@ -2,7 +2,7 @@ import { Box, Button, Divider, Heading, HStack, Link, Text, useBoolean, VStack }
 import { Group } from "@semaphore-protocol/group"
 import { Identity } from "@semaphore-protocol/identity"
 import { generateProof } from "@semaphore-protocol/proof"
-import { BigNumber, utils } from "ethers"
+import {BigNumber, ethers, providers, utils} from "ethers"
 import getNextConfig from "next/config"
 import { useRouter } from "next/router"
 import { useCallback, useContext, useEffect, useState } from "react"
@@ -65,43 +65,23 @@ export default function ProofsPage() {
                     signal
                 )
 
-                let response: any
 
-                if (env.OPENZEPPELIN_AUTOTASK_WEBHOOK) {
-                    response = await fetch(env.OPENZEPPELIN_AUTOTASK_WEBHOOK, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            abi: Feedback.abi,
-                            address: env.FEEDBACK_CONTRACT_ADDRESS,
-                            functionName: "sendFeedback",
-                            functionParameters: [signal, merkleTreeRoot, nullifierHash, proof]
-                        })
-                    })
-                } else {
-                    response = await fetch("api/feedback", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            feedback: signal,
-                            merkleTreeRoot,
-                            nullifierHash,
-                            proof
-                        })
-                    })
-                }
-
-                if (response.status === 200) {
+                if (window.ethereum) {
+                    const provider = new providers.Web3Provider(window.ethereum)
+                    await provider.send("eth_requestAccounts", [])
+                    const signer = provider.getSigner()
+                    const contract = new ethers.Contract(env.FEEDBACK_CONTRACT_ADDRESS, Feedback.abi, signer)
+                    const transaction = await contract.sendFeedback(signal, merkleTreeRoot, nullifierHash, proof)
+                    await transaction.wait()
                     addFeedback(feedback)
-
                     setLogs(`Your feedback was posted 🎉`)
                 } else {
                     setLogs("Some error occurred, please try again!")
                 }
+
             } catch (error) {
                 console.error(error)
-
-                setLogs("Some error occurred, please try again!")
+                setLogs("try catch error!!!")
             } finally {
                 setLoading.off()
             }

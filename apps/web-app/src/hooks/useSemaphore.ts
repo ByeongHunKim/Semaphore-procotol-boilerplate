@@ -18,7 +18,6 @@ export default function useSemaphore(): SemaphoreContextType {
         })
 
         const members = await semaphore.getGroupMembers(env.GROUP_ID)
-        console.log('members>>>>',members[0].toString())
         setUsers(members)
     }, [])
 

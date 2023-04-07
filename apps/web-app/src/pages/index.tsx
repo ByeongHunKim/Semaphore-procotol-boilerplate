@@ -6,6 +6,7 @@ import Stepper from "../components/Stepper"
 import LogsContext from "../context/LogsContext"
 import IconAddCircleFill from "../icons/IconAddCircleFill"
 import IconRefreshLine from "../icons/IconRefreshLine"
+import {providers} from "ethers";
 
 export default function IdentitiesPage() {
     const router = useRouter()
