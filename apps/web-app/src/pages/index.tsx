@@ -48,24 +48,24 @@ export default function IdentitiesPage() {
 
     return (
         <>
-            <Heading as="h2" size="xl">
-                Identities
-            </Heading>
+            {/*<Heading as="h2" size="xl">*/}
+            {/*    Identities*/}
+            {/*</Heading>*/}
 
-            <Text pt="2" fontSize="md">
-                Users interact with the protocol using a Semaphore{" "}
-                <Link href="https://semaphore.appliedzkp.org/docs/guides/identities" color="primary.500" isExternal>
-                    identity
-                </Link>{" "}
-                (similar to Ethereum accounts). It contains three values:
-            </Text>
-            <OrderedList pl="20px" pt="5px" spacing="3">
-                <ListItem>Trapdoor: private, known only by user</ListItem>
-                <ListItem>Nullifier: private, known only by user</ListItem>
-                <ListItem>Commitment: public</ListItem>
-            </OrderedList>
+            {/*<Text pt="2" fontSize="md">*/}
+            {/*    Users interact with the protocol using a Semaphore{" "}*/}
+            {/*    <Link href="https://semaphore.appliedzkp.org/docs/guides/identities" color="primary.500" isExternal>*/}
+            {/*        identity*/}
+            {/*    </Link>{" "}*/}
+            {/*    (similar to Ethereum accounts). It contains three values:*/}
+            {/*</Text>*/}
+            {/*<OrderedList pl="20px" pt="5px" spacing="3">*/}
+            {/*    <ListItem>Trapdoor: private, known only by user</ListItem>*/}
+            {/*    <ListItem>Nullifier: private, known only by user</ListItem>*/}
+            {/*    <ListItem>Commitment: public</ListItem>*/}
+            {/*</OrderedList>*/}
 
-            <Divider pt="5" borderColor="gray.500" />
+            {/*<Divider pt="5" borderColor="gray.500" />*/}
 
             <HStack pt="5" justify="space-between">
                 <Text fontWeight="bold" fontSize="lg">

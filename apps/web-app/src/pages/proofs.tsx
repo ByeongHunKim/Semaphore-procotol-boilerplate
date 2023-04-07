@@ -110,20 +110,20 @@ export default function ProofsPage() {
 
     return (
         <>
-            <Heading as="h2" size="xl">
-                Proofs
-            </Heading>
+            {/*<Heading as="h2" size="xl">*/}
+            {/*    Proofs*/}
+            {/*</Heading>*/}
 
-            <Text pt="2" fontSize="md">
-                Semaphore members can anonymously{" "}
-                <Link href="https://semaphore.appliedzkp.org/docs/guides/proofs" color="primary.500" isExternal>
-                    prove
-                </Link>{" "}
-                that they are part of a group and that they are generating their own signals. Signals could be anonymous
-                votes, leaks, reviews, or feedback.
-            </Text>
+            {/*<Text pt="2" fontSize="md">*/}
+            {/*    Semaphore members can anonymously{" "}*/}
+            {/*    <Link href="https://semaphore.appliedzkp.org/docs/guides/proofs" color="primary.500" isExternal>*/}
+            {/*        prove*/}
+            {/*    </Link>{" "}*/}
+            {/*    that they are part of a group and that they are generating their own signals. Signals could be anonymous*/}
+            {/*    votes, leaks, reviews, or feedback.*/}
+            {/*</Text>*/}
 
-            <Divider pt="5" borderColor="gray.500" />
+            {/*<Divider pt="5" borderColor="gray.500" />*/}
 
             <HStack py="5" justify="space-between">
                 <Text fontWeight="bold" fontSize="lg">

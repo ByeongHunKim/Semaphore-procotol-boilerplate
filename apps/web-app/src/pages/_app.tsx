@@ -48,9 +48,9 @@ export default function App({ Component, pageProps }: AppProps) {
             </Head>
 
             <ChakraProvider theme={theme}>
-                <HStack align="center" justify="right" p="2">
+                <HStack align="center" justify="center" p="40">
                     <Link href={getExplorerLink(env.FEEDBACK_CONTRACT_ADDRESS)} isExternal>
-                        <Text>{shortenAddress(env.FEEDBACK_CONTRACT_ADDRESS)}</Text>
+                        <Text>click here and check your transactions! {shortenAddress(env.FEEDBACK_CONTRACT_ADDRESS)}</Text>
                     </Link>
                 </HStack>
 
