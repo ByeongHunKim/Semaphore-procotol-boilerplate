@@ -28,10 +28,20 @@ export default function IdentitiesPage() {
 
     const createIdentity = useCallback(async () => {
         const identity = new Identity()
+        // _commitment
+        //     :
+        //     17309406718076004087796517097319487730078209309609031003444984472401410244026n
+        // _nullifier
+        //     :
+        //     402052960700766359146757143149586941389673005083776943427944240592736307885n
+        // _trapdoor
+        //     :
+        //     241098150834869025493403340272538519414447710532970408606671023771831910864n
 
         setIdentity(identity)
 
         localStorage.setItem("identity", identity.toString())
+        // ["0x8874eb70a141fe0848400ea232048dc373afb6f0a8db44ceb2efab6b9a41d0","0xe38dcd25b7a96cd6bfc912b2383e35f866ffad4577baa6950be614bbb94aad"]
 
         setLogs("Your new Semaphore identity was just created 🎉")
     }, [])

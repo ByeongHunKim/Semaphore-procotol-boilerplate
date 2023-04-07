@@ -28,16 +28,11 @@ export default function App({ Component, pageProps }: AppProps) {
         return `${address.slice(0, 6)}...${address.slice(-4)}`
     }
 
-    function getExplorerLink(network: Network, address: string) {
-        switch (network) {
-            case "goerli":
-            case "sepolia":
-                return `https://${network}.etherscan.io/address/${address}`
-            case "arbitrum-goerli":
-                return `https://goerli.arbiscan.io/address/${address}`
-            default:
-                return ""
+    function getExplorerLink(address: string) {
+        if(address){
+            return `https://mumbai.polygonscan.com/address/${address}`
         }
+        return ""
     }
 
     return (
@@ -54,11 +49,8 @@ export default function App({ Component, pageProps }: AppProps) {
 
             <ChakraProvider theme={theme}>
                 <HStack align="center" justify="right" p="2">
-                    <Link href={getExplorerLink(env.DEFAULT_NETWORK, env.FEEDBACK_CONTRACT_ADDRESS)} isExternal>
+                    <Link href={getExplorerLink(env.FEEDBACK_CONTRACT_ADDRESS)} isExternal>
                         <Text>{shortenAddress(env.FEEDBACK_CONTRACT_ADDRESS)}</Text>
-                    </Link>
-                    <Link href="https://github.com/semaphore-protocol/boilerplate" isExternal>
-                        <IconButton aria-label="Github repository" icon={<Icon boxSize={6} as={FaGithub} />} />
                     </Link>
                 </HStack>
 

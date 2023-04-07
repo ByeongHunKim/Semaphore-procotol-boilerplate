@@ -15,24 +15,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         throw new Error("Please, define INFURA_API_KEY in your .env file")
     }
 
-    if (typeof process.env.ETHEREUM_PRIVATE_KEY !== "string") {
-        throw new Error("Please, define ETHEREUM_PRIVATE_KEY in your .env file")
+    if (typeof process.env.POLYGON_PRIVATE_KEY !== "string") {
+        throw new Error("Please, define POLYGON_PRIVATE_KEY in your .env file")
     }
 
-    const ethereumPrivateKey = process.env.ETHEREUM_PRIVATE_KEY
-    const ethereumNetwork = process.env.DEFAULT_NETWORK
+    const polygonPrivateKey = process.env.POLYGON_PRIVATE_KEY
+    const polygonNetwork = process.env.DEFAULT_NETWORK
     const infuraApiKey = process.env.INFURA_API_KEY
     const contractAddress = process.env.FEEDBACK_CONTRACT_ADDRESS
 
-    const provider =
-        ethereumNetwork === "localhost"
-            ? new providers.JsonRpcProvider()
-            : new providers.InfuraProvider(ethereumNetwork, infuraApiKey)
+    const provider = new providers.InfuraProvider(polygonNetwork, infuraApiKey)
 
-    const signer = new Wallet(ethereumPrivateKey, provider)
+    // 서명권한을 env 내부 private_key말고 유저에게 줘야함
+    const signer = new Wallet(polygonPrivateKey, provider)
     const contract = new Contract(contractAddress, Feedback.abi, signer)
 
     const { feedback, merkleTreeRoot, nullifierHash, proof } = req.body
+
+    console.log('feedback>>',feedback)
 
     try {
         const transaction = await contract.sendFeedback(feedback, merkleTreeRoot, nullifierHash, proof)
