@@ -65,19 +65,16 @@ export default function ProofsPage() {
                     signal
                 )
 
+                await window.ethereum.enable();
+                const provider = new providers.Web3Provider(window.ethereum)
+                await provider.send("eth_requestAccounts", [])
+                const signer = provider.getSigner()
+                const contract = new ethers.Contract(env.FEEDBACK_CONTRACT_ADDRESS, Feedback.abi, signer)
+                const transaction = await contract.sendFeedback(signal, merkleTreeRoot, nullifierHash, proof)
+                await transaction.wait()
+                addFeedback(feedback)
+                setLogs(`Your feedback was posted 🎉`)
 
-                if (typeof window.ethereum !== 'undefined' && window.ethereum !== null) {
-                    const provider = new providers.Web3Provider(window.ethereum)
-                    await provider.send("eth_requestAccounts", [])
-                    const signer = provider.getSigner()
-                    const contract = new ethers.Contract(env.FEEDBACK_CONTRACT_ADDRESS, Feedback.abi, signer)
-                    const transaction = await contract.sendFeedback(signal, merkleTreeRoot, nullifierHash, proof)
-                    await transaction.wait()
-                    addFeedback(feedback)
-                    setLogs(`Your feedback was posted 🎉`)
-                } else {
-                    setLogs("Some error occurred, please try again!")
-                }
 
             } catch (error) {
                 console.error(error)

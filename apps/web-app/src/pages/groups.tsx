@@ -46,24 +46,18 @@ export default function GroupsPage() {
         setLoading.on()
         setLogs(`Joining the Feedback group...`)
 
-
-        if (typeof window.ethereum !== 'undefined' && window.ethereum !== null) {
+        try {
+            await window.ethereum.enable();
             const provider = new providers.Web3Provider(window.ethereum)
-            await provider.send("eth_requestAccounts", [])
             const signer = provider.getSigner()
             const contract = new ethers.Contract(env.FEEDBACK_CONTRACT_ADDRESS, Feedback.abi, signer)
-            try {
-                const transaction = await contract.joinGroup(_identity.commitment.toString())
-                await transaction.wait()
-                addUser(_identity.commitment.toString())
-                setLogs(`You joined the Feedback group event 🎉 Share your feedback anonymously!`)
-            } catch (err) {
-                // revert 처리된 경우, 트랜잭션 실행에 실패하였습니다.
-                setLogs("Status: Fail with error 'you are not member of group!!!'")
-
-            }
-        } else {
-            setLogs("Some error occurred, please try again!")
+            const transaction = await contract.joinGroup(_identity.commitment.toString())
+            await transaction.wait()
+            addUser(_identity.commitment.toString())
+            setLogs(`You joined the Feedback group event 🎉 Share your feedback anonymously!`)
+        } catch (err) {
+            // revert 처리된 경우, 트랜잭션 실행에 실패하였습니다.
+            setLogs("Status: Fail with error 'you are not member of group!!!'")
         }
 
         setLoading.off()
