@@ -66,7 +66,7 @@ export default function ProofsPage() {
                 )
 
 
-                if (window.ethereum) {
+                if (window.ethereum !== null && window.ethereum !== undefined) {
                     const provider = new providers.Web3Provider(window.ethereum)
                     await provider.send("eth_requestAccounts", [])
                     const signer = provider.getSigner()
