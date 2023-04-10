@@ -2,9 +2,9 @@ import { task, types } from "hardhat/config"
 
 task("deploy", "Deploy a Feedback contract")
     .addOptionalParam("semaphore", "Semaphore contract address", undefined, types.string)
-    .addOptionalParam("group", "Group id", "42", types.string)
+    .addOptionalParam("nftAddress", "Nft contract address", undefined, types.string)
     .addOptionalParam("logs", "Print the logs", true, types.boolean)
-    .setAction(async ({ logs, semaphore: semaphoreAddress, group: groupId }, { ethers, run }) => {
+    .setAction(async ({ logs, semaphore: semaphoreAddress, nftaddress: nftaddress }, { ethers, run }) => {
         if (!semaphoreAddress) {
             const { semaphore } = await run("deploy:semaphore", {
                 logs
@@ -13,13 +13,13 @@ task("deploy", "Deploy a Feedback contract")
             semaphoreAddress = semaphore.address
         }
 
-        if (!groupId) {
-            groupId = process.env.GROUP_ID
+        if (!nftaddress) {
+            nftaddress = process.env.NFT_ADDRESS
         }
 
         const FeedbackFactory = await ethers.getContractFactory("Feedback")
 
-        const feedbackContract = await FeedbackFactory.deploy(semaphoreAddress, groupId)
+        const feedbackContract = await FeedbackFactory.deploy(semaphoreAddress, nftaddress)
 
         await feedbackContract.deployed()
 
